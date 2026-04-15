@@ -1,0 +1,125 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="aggdraw" />
+          <option value="aiohttp" />
+          <option value="aiosignal" />
+          <option value="antiorm" />
+          <option value="argon2-cffi" />
+          <option value="astor" />
+          <option value="asttokens" />
+          <option value="async-generator" />
+          <option value="async-timeout" />
+          <option value="backcall" />
+          <option value="bleach" />
+          <option value="bs4" />
+          <option value="cftime" />
+          <option value="click" />
+          <option value="colorama" />
+          <option value="data" />
+          <option value="databases" />
+          <option value="db" />
+          <option value="decorator" />
+          <option value="defusedxml" />
+          <option value="entrypoints" />
+          <option value="executing" />
+          <option value="fastjsonschema" />
+          <option value="frozenlist" />
+          <option value="funcsigs" />
+          <option value="future" />
+          <option value="google" />
+          <option value="google-api-core" />
+          <option value="google-api-python-client" />
+          <option value="google-auth-httplib2" />
+          <option value="googleAPI" />
+          <option value="googleapis-common-protos" />
+          <option value="ipykernel" />
+          <option value="ipython" />
+          <option value="ipython-beautifulsoup" />
+          <option value="ipython-genutils" />
+          <option value="jdcal" />
+          <option value="jedi" />
+          <option value="Jinja2" />
+          <option value="jsonschema" />
+          <option value="jupyter-client" />
+          <option value="jupyter-core" />
+          <option value="jupyterlab-pygments" />
+          <option value="Keras-Applications" />
+          <option value="matplotlib-inline" />
+          <option value="mistune" />
+          <option value="multidict" />
+          <option value="mypy-extensions" />
+          <option value="mysqlclient" />
+          <option value="nbclient" />
+          <option value="nbconvert" />
+          <option value="nbformat" />
+          <option value="netCDF4" />
+          <option value="notebook" />
+          <option value="numexpr" />
+          <option value="oauth2client" />
+          <option value="pandocfilters" />
+          <option value="parso" />
+          <option value="pathspec" />
+          <option value="patsy" />
+          <option value="pickleshare" />
+          <option value="prometheus-client" />
+          <option value="prompt-toolkit" />
+          <option value="pure-eval" />
+          <option value="pvlib" />
+          <option value="pyaes" />
+          <option value="PyDrive" />
+          <option value="Pygments" />
+          <option value="Pympler" />
+          <option value="PyMySQL" />
+          <option value="pyperclip" />
+          <option value="pypiwin32" />
+          <option value="pyrsistent" />
+          <option value="pysftp" />
+          <option value="pysolar" />
+          <option value="pywin32" />
+          <option value="pywinpty" />
+          <option value="PyYAML" />
+          <option value="pyzmq" />
+          <option value="Send2Trash" />
+          <option value="siphon" />
+          <option value="sklearn" />
+          <option value="stack-data" />
+          <option value="statsmodels" />
+          <option value="StrEnum" />
+          <option value="tables" />
+          <option value="telepot" />
+          <option value="Telethon" />
+          <option value="terminado" />
+          <option value="testpath" />
+          <option value="tf-estimator-nightly" />
+          <option value="tomli" />
+          <option value="tornado" />
+          <option value="traitlets" />
+          <option value="wcwidth" />
+          <option value="webcolors" />
+          <option value="webencodings" />
+          <option value="wget" />
+          <option value="yarl" />
+          <option value="streamlit" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="pandas" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesCompatibilityInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredStubPackages">
+        <list>
+          <option value="pandas-stubs~=1.2.0" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
