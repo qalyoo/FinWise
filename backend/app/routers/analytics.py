@@ -5,7 +5,7 @@ from datetime import datetime
 from collections import defaultdict
 from app.database import get_db
 from app.models.models import Transaction, User, TransactionType
-from app.schemas.analytics import SummaryResponse, MonthlyResponse, MonthlyStat
+from app.schemas.analytic import SummaryResponse, MonthlyResponse, MonthlyStat
 from app.routers.transactions import get_current_user
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])

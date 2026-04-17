@@ -7,6 +7,9 @@ from app.models.models import Transaction, User, TransactionType
 from app.schemas.transaction import TransactionCreate, TransactionResponse, TransactionUpdate
 from jose import jwt, JWTError
 from datetime import datetime
+import csv
+import io
+from fastapi.responses import StreamingResponse
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
@@ -127,3 +130,35 @@ def delete_transaction(
     db.delete(transaction)
     db.commit()
     return {"message": "Транзакцію видалено"}
+
+@router.get('/export/csv')
+def export_csv(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    transactions = db.query(Transaction).filter(
+        Transaction.user_id == current_user.id
+    ).order_by(Transaction.created_at.desc()).all()
+
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=';')
+
+    writer.writerow(["ID", "Sum", "Type", "Category", "Description", "Date"])
+
+    for t in transactions:
+        writer.writerow([
+            t.id,
+            t.amount,
+            t.type.value,
+            t.category.name if t.category else "Without category",
+            t.description or "",
+            t.created_at.strftime("%Y-%m-%d %H:%M")
+        ])
+
+    encoded = output.getvalue().encode('windows-1251')
+
+    return StreamingResponse(
+        iter([encoded]),
+        media_type="text/csv; charset=windows-1251",
+        headers={"Content-Disposition": "attachment; filename=transactions.csv"}
+    )
