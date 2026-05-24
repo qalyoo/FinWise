@@ -16,6 +16,7 @@ class User(Base):
     transactions = relationship("Transaction", back_populates="user")
     budgets = relationship("Budget", back_populates="user")
     goals = relationship("Goal", back_populates='user')
+    scheduled_payments = relationship("ScheduledPayment", back_populates="user")
 
 class Category(Base):
     __tablename__ = "categories"
@@ -58,3 +59,17 @@ class Goal(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     user = relationship('User', back_populates='goals')
+
+class ScheduledPayment(Base):
+    __tablename__ = "scheduled_payments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    name = Column(String, nullable=False)
+    amount = Column(Float, nullable=False)
+    day_of_month = Column(Integer, nullable=False)  # день місяця 1-31
+    category = Column(String, nullable=True)
+    is_active = Column(Integer, default=1, nullable=False)  # 1 - активний, 0 - неактивний
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship('User', back_populates='scheduled_payments')

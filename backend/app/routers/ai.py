@@ -14,7 +14,7 @@ load_dotenv()
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = "AIzaSyDTBpBkrdpKwg31gWcbQwCYxQPbChir_zs"
 
 class AIRequest(BaseModel):
     question: str
@@ -52,11 +52,10 @@ def get_advice(
         f"Income: {total_income} UAH, Expenses: {total_expense} UAH, Balance: {balance} UAH. "
         f"Categories: {category_text}. "
         f"Question: {request.question}. "
-        f"Answer in 3-5 sentences in English."
+        f"Answer in 3-5 sentences in Ukrainian language."
     )
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={GEMINI_API_KEY}"
-
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}]
     }
