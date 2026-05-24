@@ -1,16 +1,20 @@
+import os
+import requests as http_requests
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from app.database import get_db
 from app.models.models import Transaction, User, TransactionType
 from app.routers.transactions import get_current_user
-import google.generativeai as genai
-import os
+from dotenv import load_dotenv
+import json
+
+load_dotenv()
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
-GEMINI_API_KEY = os.getenv("gemini_api_key")
-genai.configure(api_key=GEMINI_API_KEY)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 class AIRequest(BaseModel):
     question: str
@@ -29,7 +33,7 @@ def get_advice(
     ).order_by(Transaction.created_at.desc()).limit(50).all()
 
     if not transactions:
-        raise HTTPException(status_code=400, detail="Немає транзакцій для аналізу")
+        raise HTTPException(status_code=400, detail="No transactions found")
 
     total_income = sum(t.amount for t in transactions if t.type == TransactionType.income)
     total_expense = sum(t.amount for t in transactions if t.type == TransactionType.expense)
@@ -38,27 +42,30 @@ def get_advice(
     by_category = {}
     for t in transactions:
         if t.type == TransactionType.expense and t.category_id:
-            cat_name = t.category.name if t.category else "Без категорії"
+            cat_name = t.category.name if t.category else "Other"
             by_category[cat_name] = by_category.get(cat_name, 0) + t.amount
 
-    category_text = "\n".join([f"- {k}: {v} грн" for k, v in by_category.items()])
+    category_text = ", ".join([f"{k}: {v} UAH" for k, v in by_category.items()])
 
-    prompt = f"""Ти фінансовий асистент додатку FinWise. Відповідай українською мовою.
+    prompt = (
+        f"You are FinWise financial assistant. "
+        f"Income: {total_income} UAH, Expenses: {total_expense} UAH, Balance: {balance} UAH. "
+        f"Categories: {category_text}. "
+        f"Question: {request.question}. "
+        f"Answer in 3-5 sentences in English."
+    )
 
-Фінансові дані користувача:
-- Загальний дохід: {total_income} грн
-- Загальні витрати: {total_expense} грн
-- Баланс: {balance} грн
-- Витрати по категоріях:
-{category_text}
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={GEMINI_API_KEY}"
 
-Питання користувача: {request.question}
-
-Дай коротку, конкретну та корисну відповідь (3-5 речень)."""
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}]
+    }
 
     try:
-        model = genai.GenerativeModel("gemini-pro")
-        response = model.generate_content(prompt)
-        return AIResponse(answer=response.text)
+        resp = http_requests.post(url, json=payload, timeout=30)
+        data = resp.json()
+        print("API Response:", data)  # виведе в термінал
+        answer = data["candidates"][0]["content"]["parts"][0]["text"]
+        return AIResponse(answer=answer)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Помилка AI: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AI Error: {str(e)}")
